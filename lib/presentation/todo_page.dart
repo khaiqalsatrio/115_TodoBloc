@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_counterpage_sma/bloc/todo_bloc.dart';
+import 'package:flutter_counterpage_sma/model/todo.dart';
 
 class TodoPage extends StatelessWidget {
   const TodoPage({super.key});
@@ -117,6 +118,17 @@ class TodoPage extends StatelessWidget {
                       if (State.todos.isEmpty) {
                         return Center(child: Text('Todo list is empty'));
                       }
+                      return ListView.builder(
+                        itemCount: State.todos.length,
+                        itemBuilder: (context, index) {
+                          final todo = State.todos[index];
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 8.0),
+                            padding: EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(color: Colors.blue[50]),
+                          );
+                        },
+                      );
                     }
                   },
                 ),
