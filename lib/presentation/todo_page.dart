@@ -125,7 +125,27 @@ class TodoPage extends StatelessWidget {
                           return Container(
                             margin: EdgeInsets.only(bottom: 8.0),
                             padding: EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(color: Colors.blue[50]),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[50],
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      todo.title,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
