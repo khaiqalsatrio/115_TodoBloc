@@ -43,25 +43,25 @@ class TodoPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(width: 16.0),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2100),
-                          ).then((selectedDate) {
-                            if (selectedDate != null) {
-                              context.read<TodoBloc>().add(
-                                TodoSelecDate(date: selectedDate),
-                              );
-                            }
-                          });
-                        },
-                        child: const Text('Select Date'),
-                      ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        ).then((selectedDate) {
+                          if (selectedDate != null) {
+                            context.read<TodoBloc>().add(
+                              TodoSelecDate(date: selectedDate),
+                            );
+                          }
+                        });
+                      },
+                      child: const Text('Select Date'),
                     ),
                   ),
                 ],
@@ -88,22 +88,37 @@ class TodoPage extends StatelessWidget {
                     FilledButton(
                       onPressed: () {
                         if (_key.currentState!.validate()) {
-                          final selectedDate = context.read<TodoBloc>().state;
-                          if (selectedDate is TodoLoaded) {
+                          final state = context.read<TodoBloc>().state;
+                          if (state is TodoLoaded &&
+                              state.selectedDate != null) {
                             context.read<TodoBloc>().add(
                               TodoEventAdd(
                                 title: _controller.text,
-                                date: selectedDate.selectedDate!,
+                                date: state.selectedDate!,
                               ),
                             );
                             _controller.clear();
-                            selectedDate.selectedDate = null;
+                            // No need to nullify the selectedDate here, as it's managed by the state
                           }
                         }
                       },
-                      child: Text('Tambah'),
+                      child: const Text('Tambah'),
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Expanded(
+                child: BlocBuilder<TodoBloc, TodoState>(
+                  builder: (context, State) {
+                    if (State is TodoLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (State is TodoLoaded) {
+                      if (State.todos.isEmpty) {
+                        return Center(child: Text('Todo list is empty'));
+                      }
+                    }
+                  },
                 ),
               ),
             ],
